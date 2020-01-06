@@ -12,6 +12,7 @@ import java.util.Date;
 public class Student implements Serializable {
     private String id;
     private String name;
+    private String password;
     private Integer age;
     private String sex;
     private Date birthday;

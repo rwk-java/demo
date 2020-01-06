@@ -34,4 +34,9 @@ public class DemoApplicationTests {
             System.out.println(student);
         }
     }
+    @Test
+    public void select2(){
+        Student 刘涛 = studentService.queryByName("刘涛");
+        System.out.println(刘涛);
+    }
 }

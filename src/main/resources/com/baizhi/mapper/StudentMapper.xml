@@ -8,4 +8,7 @@
     <update id="update">
         update student set name=#{name} where id=#{id}
     </update>
+    <select id="queryByName" resultType="Student">
+        select * from student where name=#{name}
+    </select>
 </mapper>

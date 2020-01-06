@@ -18,6 +18,12 @@ public class StudentServiceImpl implements StudentService {
     private StudentDao studentDao;
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public Student queryByName(String name) {
+        return studentDao.queryByName(name);
+    }
+
+    @Override
     @ClearCache
     public void update(Student student) {
         studentDao.update(student);
