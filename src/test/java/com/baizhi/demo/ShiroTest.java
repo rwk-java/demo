@@ -2,8 +2,11 @@ package com.baizhi.demo;
 
 import com.baizhi.App;
 import com.baizhi.realm.MyRealm;
+import com.baizhi.realm.MyRealm1;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.credential.CredentialsMatcher;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
@@ -13,6 +16,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import sun.java2d.pipe.SpanIterator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootTest(classes = App.class)
 @RunWith(SpringRunner.class)
@@ -45,11 +52,19 @@ public class ShiroTest {
     }
     @Test
     public void testMyShiro(){
-        MyRealm myRealm = new MyRealm();
+        MyRealm1 myRealm = new MyRealm1();
+
+        // 加密
+        HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
+        credentialsMatcher.setHashAlgorithmName("MD5");
+        credentialsMatcher.setHashIterations(1024);
+
+        myRealm.setCredentialsMatcher(credentialsMatcher);
+
         SecurityManager securityManager = new DefaultSecurityManager(myRealm);
         SecurityUtils.setSecurityManager(securityManager);
         Subject subject = SecurityUtils.getSubject();
-        AuthenticationToken token = new UsernamePasswordToken("刘涛","111111");
+        AuthenticationToken token = new UsernamePasswordToken("刘涛","111110");
         try {
             subject.login(token);
         } catch (UnknownAccountException e) {
@@ -61,6 +76,18 @@ public class ShiroTest {
         } finally {
             boolean authenticated = subject.isAuthenticated();
             System.out.println("主体认证："+authenticated);
+            if(authenticated){
+                String principal = (String) subject.getPrincipal();
+                System.out.println(principal);
+                boolean admin = subject.hasRole("admin");
+                List<String> list = new ArrayList<>();
+                list.add("admin");
+                list.add("adminSup");
+                boolean b = subject.hasAllRoles(list);
+                boolean[] booleans = subject.hasRoles(list);
+                boolean permitted = subject.isPermitted("admin:*");
+                System.out.println(permitted);
+            }
         }
     }
 }

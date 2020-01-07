@@ -16,4 +16,5 @@ public class Student implements Serializable {
     private Integer age;
     private String sex;
     private Date birthday;
+    private String salt;
 }

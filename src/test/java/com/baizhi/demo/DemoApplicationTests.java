@@ -5,6 +5,8 @@ import com.baizhi.App;
 import com.baizhi.dao.StudentDao;
 import com.baizhi.entity.Student;
 import com.baizhi.service.StudentService;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +40,11 @@ public class DemoApplicationTests {
     public void select2(){
         Student 刘涛 = studentService.queryByName("刘涛");
         System.out.println(刘涛);
+    }
+    @Test
+    public void md5(){
+        Md5Hash md5Hash = new Md5Hash("000000","qdsaasdas");
+        String s = md5Hash.toHex();
+        System.out.println(s);
     }
 }
